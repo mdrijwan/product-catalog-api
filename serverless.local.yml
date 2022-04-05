@@ -1,0 +1,106 @@
+service: product-catalog-local
+custom:
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    seed:
+      domain:
+        sources:
+          - table: ${self:provider.environment.DYNAMODB_TABLE}
+            sources: [./src/resources/seedData.json]
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  stage: dev
+  environment:
+    DYNAMODB_TABLE: ${opt:stage, self:provider.stage}-product-table
+    S3_BUCKET: ${opt:stage, self:provider.stage}-product-bucket
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+functions:
+  createProduct:
+    handler: src/api/create.product
+    events:
+      - http:
+          path: supply-chain
+          method: post
+          cors: true
+          request:
+            schema:
+              application/json: ${file(./src/validator/request.json)}
+
+  listProducts:
+    handler: src/api/list.products
+    events:
+      - http:
+          path: supply-chain
+          method: get
+          cors: true
+
+  getProduct:
+    handler: src/api/get.product
+    events:
+      - http:
+          path: supply-chain/{id}
+          method: get
+          cors: true
+
+  updateProduct:
+    handler: src/api/update.product
+    events:
+      - http:
+          path: supply-chain/{id}
+          method: put
+          cors: true
+
+  removeProduct:
+    handler: src/api/remove.product
+    events:
+      - http:
+          path: supply-chain/{id}
+          method: delete
+          cors: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dynamodb-local
+  - serverless-offline
+
+configValidationMode: off
+
+resources:
+  Resources:
+    ProductDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        StreamSpecification:
+          StreamViewType: NEW_AND_OLD_IMAGES
+        BillingMode: PAY_PER_REQUEST
+
