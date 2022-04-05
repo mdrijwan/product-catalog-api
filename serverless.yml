@@ -1,0 +1,149 @@
+service: product-catalog-api
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
+  deploymentBucket:
+    name: ${self:provider.environment.S3_BUCKET}
+  environment:
+    DYNAMODB_TABLE: ${opt:stage, self:provider.stage}-product-table
+    S3_BUCKET: ${opt:stage, self:provider.stage}-product-bucket
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}*'
+
+functions:
+  createProduct:
+    handler: src/api/create.product
+    events:
+      - http:
+          path: supply-chain
+          method: post
+          cors: true
+          request:
+            schema:
+              application/json: ${file(./src/validator/request.json)}
+          authorizer:
+            name: requestAuthorizer
+            type: request
+            resultTtlInSeconds: 60
+            identitySource: method.request.header.authorizationToken
+          documentation:
+            summary: Adds a new product to the catalog
+            tags:
+              - createProduct
+            requestModels:
+              "application/json": RequestModel
+            methodResponses:
+              - statusCode: "201"
+                responseModels:
+                  "application/json": ResponseModel
+  listProducts:
+    handler: src/api/list.products
+    events:
+      - http:
+          path: supply-chain
+          method: get
+          cors: true
+          documentation:
+            summary: Lists all products from the catalog
+            tags:
+              - listProducts
+            methodResponses:
+              - statusCode: "200"
+                responseModels:
+                  "application/json": ResponseModel
+
+  getProduct:
+    handler: src/api/get.product
+    events:
+      - http:
+          path: supply-chain/{id}
+          method: get
+          cors: true
+          documentation:
+            summary: Gets a single product from the catalog
+            tags:
+              - getProduct
+            methodResponses:
+              - statusCode: "200"
+                responseModels:
+                  "application/json": ResponseModel
+
+  updateProduct:
+    handler: src/api/update.product
+    events:
+      - http:
+          path: supply-chain/{id}
+          method: put
+          cors: true
+          authorizer:
+            name: requestAuthorizer
+            type: request
+            resultTtlInSeconds: 60
+            identitySource: method.request.header.authorizationToken
+          documentation:
+            summary: Updates a single product from the catalog
+            tags:
+              - updateProduct
+            methodResponses:
+              - statusCode: "202"
+                responseModels:
+                  "application/json": ResponseModel
+
+  removeProduct:
+    handler: src/api/remove.product
+    events:
+      - http:
+          path: supply-chain/{id}
+          method: delete
+          cors: true
+          documentation:
+            summary: Removes a single product from the catalog
+            tags:
+              - removeProduct
+            methodResponses:
+              - statusCode: "204"
+                responseModels:
+                  "application/json": ResponseModel
+
+  requestAuthorizer:
+    handler: src/validator/requestAuthorizer.handler
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-aws-documentation
+
+configValidationMode: off
+
+custom:
+  documentation:
+    api:
+      info:
+        version: "1.0.0"
+        title: "Supply Chain API"
+        description: "An application to maintain a product catalog that offers a REST API"
+      tags:
+        - name: "product catalog"
+          description: "Services to maintain product catalog with CRUD operation"
+    resources:
+      - path: "/supply-chain"
+        description: "A product catalog that propagates to 3rd party downstream services"
+    models:
+      - name: RequestModel
+        description: "Create/Modify a product to the catalog"
+        contentType: "application/json"
+        schema: ${file(./src/validator/request.json)}
+      - name: ResponseModel
+        description: "Product Catalog Model"
+        contentType: "application/json"
+        schema: ${file(./src/validator/response.json)}
