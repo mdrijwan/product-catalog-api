@@ -1,0 +1,128 @@
+[
+  {
+    "quantity": 6,
+    "id": "bfc022a5-c239-45f5-bb35-f88023b669ce",
+    "price": "23.65",
+    "name": "Prod 00033"
+  },
+  {
+    "quantity": 5,
+    "id": "88c5db61-4501-4e38-bf8c-29a6626766e1",
+    "price": 12.34,
+    "name": "testing 123"
+  },
+  {
+    "quantity": 5,
+    "id": "e1967066-d9c6-4f80-a202-190cd77d216f",
+    "price": 12.34,
+    "name": "testing 123"
+  },
+  {
+    "quantity": 1023,
+    "id": "36f5f09a-c33b-4af3-964d-0d9b61250b3f",
+    "price": 10.2,
+    "name": "Watermelon"
+  },
+  {
+    "quantity": 22,
+    "id": "f6dc5ccc-bff9-4517-8d54-f8d72171a390",
+    "price": 12.84,
+    "name": "Product XPTO"
+  },
+  {
+    "quantity": 15,
+    "id": "6a8e94ba-7569-4fad-925b-72ba9a97393e",
+    "price": 12.34,
+    "name": "testing 32123"
+  },
+  {
+    "quantity": 15,
+    "id": "efe30199-fe6a-454f-809f-125940c37f9e",
+    "price": 12,
+    "name": "foo product"
+  },
+  {
+    "quantity": 20,
+    "id": "1de73ddc-fcc5-4184-acbc-4ea42a735bc6",
+    "price": 10,
+    "name": "TEST_NAME"
+  },
+  {
+    "quantity": 1,
+    "id": "18776b14-cc73-4ea4-81f9-1b4595ee70c5",
+    "price": 123.987,
+    "name": "string"
+  },
+  {
+    "quantity": 3,
+    "id": "fd005736-c840-47ea-a471-f98d228c1c5e",
+    "price": 100,
+    "name": "testxxxx444xx"
+  },
+  {
+    "quantity": 10,
+    "id": "11150cb0-d23b-4d34-8587-4478bb610c8e",
+    "price": 30,
+    "name": "Shampoo Tipo 2"
+  },
+  {
+    "quantity": 5,
+    "id": "aliqua nulla occaecat",
+    "price": -5171153.402774692,
+    "name": "in reprehenderit dolore occaecat mollit"
+  },
+  {
+    "quantity": 22,
+    "id": "36ef57e4-229e-4bdf-b5c2-03e17830ece7",
+    "price": 12.84,
+    "name": "Product XPTO"
+  },
+  {
+    "quantity": 100,
+    "id": "56ae0a39-4c34-46fc-a280-c092cfed3ea3",
+    "price": 1.99,
+    "name": "Wonka Bar"
+  },
+  {
+    "quantity": 7,
+    "id": "e6d79719-d659-4f29-8403-826554775ae0",
+    "price": 300,
+    "name": "test 1"
+  },
+  {
+    "quantity": 7,
+    "id": "705ecce5-0bb4-49a9-a885-2ff1c2c7cc44",
+    "price": 300,
+    "name": "test 1"
+  },
+  {
+    "quantity": 43,
+    "id": "ae0d9a21-3fe7-4d48-8383-06a5c4f303bb",
+    "price": 123,
+    "name": "best-product-new"
+  },
+  {
+    "quantity": 7,
+    "id": "3c1695f4-4810-4012-a73a-e53410cbe47a",
+    "price": 300,
+    "name": "test updated"
+  },
+  {
+    "quantity": 7,
+    "id": "ddb8e58a-07fa-425f-96fd-b611896bf99c",
+    "price": 300,
+    "name": "test updated"
+  },
+  {
+    "quantity": 5,
+    "id": "21f5fbbd-1367-4c57-a43e-c9fe6845a1b7",
+    "price": 12.34,
+    "name": "test name 12121"
+  },
+  {
+    "quantity": 15,
+    "id": "75959c51-131f-4474-81f8-aa2ea72a82e4",
+    "price": 12.34,
+    "name": "testing 32123"
+  }
+]
