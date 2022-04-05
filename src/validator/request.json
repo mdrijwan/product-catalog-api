@@ -1,0 +1,28 @@
+{
+  "definitions": {
+    "non-empty-string": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Create Product Schema",
+  "required": ["name", "price", "quantity"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "$ref": "#/definitions/non-empty-string",
+      "description": "Name of the product."
+    },
+    "price": {
+      "type": "number",
+      "description": "Price of the product"
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "Quantity of the product"
+    }
+  },
+  "additionalProperties": false
+}
