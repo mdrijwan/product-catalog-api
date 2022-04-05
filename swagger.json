@@ -1,0 +1,228 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "An application to maintain a product catalog that offers a REST API",
+    "version" : "1.0.0",
+    "title" : "dev-product-catalog-api"
+  },
+  "host" : "02mg45ojgd.execute-api.us-east-1.amazonaws.com",
+  "basePath" : "/dev",
+  "tags" : [ {
+    "name" : "product catalog",
+    "description" : "Services to maintain product catalog with CRUD operation"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/supply-chain" : {
+      "get" : {
+        "tags" : [ "listProducts" ],
+        "summary" : "Lists all products from the catalog",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/ResponseModel"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "createProduct" ],
+        "summary" : "Adds a new product to the catalog",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "RequestModel",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/RequestModel"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "201 response",
+            "schema" : {
+              "$ref" : "#/definitions/ResponseModel"
+            }
+          }
+        },
+        "security" : [ {
+          "requestAuthorizer" : [ ]
+        } ]
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supply-chain/{id}" : {
+      "get" : {
+        "tags" : [ "getProduct" ],
+        "summary" : "Gets a single product from the catalog",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "schema" : {
+              "$ref" : "#/definitions/ResponseModel"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "updateProduct" ],
+        "summary" : "Updates a single product from the catalog",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "202" : {
+            "description" : "202 response",
+            "schema" : {
+              "$ref" : "#/definitions/ResponseModel"
+            }
+          }
+        },
+        "security" : [ {
+          "requestAuthorizer" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "removeProduct" ],
+        "summary" : "Removes a single product from the catalog",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "204 response",
+            "schema" : {
+              "$ref" : "#/definitions/ResponseModel"
+            }
+          }
+        }
+      },
+      "options" : {
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200 response",
+            "headers" : {
+              "Access-Control-Allow-Origin" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Methods" : {
+                "type" : "string"
+              },
+              "Access-Control-Allow-Headers" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "requestAuthorizer" : {
+      "type" : "apiKey",
+      "name" : "authorizationToken",
+      "in" : "header",
+      "x-amazon-apigateway-authtype" : "custom"
+    }
+  },
+  "definitions" : {
+    "RequestModel" : {
+      "type" : "object",
+      "required" : [ "name", "price", "quantity" ],
+      "properties" : {
+        "quantity" : {
+          "type" : "integer",
+          "description" : "Quantity of the product"
+        },
+        "price" : {
+          "type" : "number",
+          "description" : "Price of the product"
+        },
+        "name" : {
+          "description" : "Name of the product.",
+          "$ref" : "#/definitions/RequestModelName"
+        }
+      },
+      "title" : "Create Product Schema",
+      "description" : "Create/Modify a product to the catalog"
+    },
+    "ResponseModel" : {
+      "type" : "object",
+      "required" : [ "created_at", "id", "name", "price", "quantity" ],
+      "properties" : {
+        "quantity" : {
+          "type" : "integer",
+          "description" : "Quantity of the product.",
+          "title" : "The quantity schema"
+        },
+        "price" : {
+          "type" : "number",
+          "description" : "Price of the product.",
+          "title" : "The price schema"
+        },
+        "name" : {
+          "type" : "string",
+          "description" : "Name of the product.",
+          "title" : "The name schema"
+        },
+        "created_at" : {
+          "type" : "integer",
+          "description" : "Product creation time.",
+          "title" : "The created_at schema"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "An explanation about the purpose of this instance.",
+          "title" : "The id schema"
+        }
+      },
+      "title" : "The Response Schema",
+      "description" : "Product Catalog Model"
+    }
+  }
+}
